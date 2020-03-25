@@ -5,27 +5,23 @@ async function addUser(attributes) {
   return user.save()
 }
 
-
-async function editUser(userID: string, attributes) {
-  attributes._id = userID
-  const user = await User.findOne({ _id: userID })
-  return user.update(attributes)
+async function updateUser(userID: string, attributes) {
+  return User.findOneAndUpdate({ _id: userID }, attributes)
 }
 
-async function getUser(where) {
-  return User.findOne(where)
+async function getUserByID(userID) {
+  return User.findOne({ _id: userID })
 }
 
 async function changeSubscription(userID: string, emailSubscribed: boolean, phoneSubscribed: boolean) {
-  const user = await User.findOne({ _id: userID })
-  return user.changeSubscription(emailSubscribed, phoneSubscribed)
+  return updateUser(userID, { emailSubscribed, phoneSubscribed })
 }
 
 
 const Service = {
   addUser,
-  editUser,
-  getUser,
+  updateUser,
+  getUserByID,
   changeSubscription
 }
 
