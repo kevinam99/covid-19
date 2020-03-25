@@ -1,0 +1,5 @@
+# covid-api
+
+## License
+
+Propreitary
