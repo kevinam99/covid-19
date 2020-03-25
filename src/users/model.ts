@@ -79,13 +79,13 @@ const userSchema = new Schema({
     required: true,
     validate: listValidator(locationList)
   },
-  subscribedEmail: {
+  emailSubscribed: {
     // subscribed
     type: Boolean,
     default: true,
     required: [true, '{PATH} is required']
   },
-  subscribedPhone: {
+  phoneSubscribed: {
     // subscribed
     type: Boolean,
     default: true,
@@ -102,18 +102,6 @@ userSchema.post('validate', async user => {
   return
 })
 
-/*****
-  `.methods` - instance method
-  `.statics` - class method
-*****/
-
-userSchema.methods.changeSubscription = async function(email: boolean, phone: boolean) {
-  const user = this // tslint:disable-line:no-this-assignment
-  user.subscribedEmail = email
-  user.subscribedPhone = phone
-
-  return this.save()
-}
 
 const Users = mongoose.model('User', userSchema)
 
