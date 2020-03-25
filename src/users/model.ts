@@ -42,32 +42,34 @@ function listValidator(allowedValues) {
 const userSchema = new Schema({
   name: {
     type: String,
+    lowercase: true,
     minlength: [2, 'Text less than 2 char'],
     maxlength: [20, 'Text cannot exceed 20 chars'],
-    required: [true, '{PATH} is required'],
     trim: true
   },
   email: {
     // eg. 'food'
     type: String,
+    lowercase: true,
     unique: true,
+    sparse: true,
     minlength: [3, 'Text less than 3 char'],
-    maxlength: [30, 'Text cannot exceed 30 chars'],
-    required: [true, '{PATH} is required'],
+    maxlength: [50, 'Text cannot exceed 30 chars'],
     trim: true
   },
   phone: {
     // eg. 'food'
     type: String,
     unique: true,
+    sparse: true,
     minlength: [10, 'Text less than 10 char'],
     maxlength: [15, 'Text cannot exceed 15 chars'],
-    required: [true, '{PATH} is required'],
     trim: true
   },
   // used for country code to contact users
   country: {
     type: String,
+    lowercase: true,
     required: true,
     validate: (code: string) => supportedCountries.includes(code.toLowerCase())
   },
@@ -96,8 +98,6 @@ const userSchema = new Schema({
 
 // make whatever changes before saving
 userSchema.post('validate', async user => {
-  user['name'] = user['name'].toLowerCase() // tslint:disable-line:no-string-literal
-  user['email'] = user['email'].toLowerCase() // tslint:disable-line:no-string-literal
   user['states'] = user['states'].map(val => val.toLowerCase()) // tslint:disable-line:no-string-literal
   return
 })

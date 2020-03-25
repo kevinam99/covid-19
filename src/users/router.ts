@@ -6,7 +6,8 @@ const router = express.Router()
 router.get('/', Controller.getSubscribedUsers)
 router.get('/:userID', Controller.getUser)
 
-router.post('/', Controller.addUserSubscription)
-router.delete('/:userID', Controller.stopSubscription)
+router.post('/', Controller.addUser)
+router.post('/:userID/subscription', Controller.changeSubscription)
+
 
 export default router

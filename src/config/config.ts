@@ -8,6 +8,8 @@ const Config = {
     emailToken: 'sdfsdf'
   },
   locationList: [
+    'ind', // full country
+    // individual states
     'ga',
     'ka',
     'mh',

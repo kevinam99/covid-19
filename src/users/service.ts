@@ -1,6 +1,6 @@
 import User from './model'
 
-async function addUserSubscription(attributes) {
+async function addUser(attributes) {
   const user = User(attributes)
   return user.save()
 }
@@ -16,11 +16,6 @@ async function getUser(where) {
   return User.findOne(where)
 }
 
-// addUserSubscription({name: 'Jane Doe', email: 'asfsdfsd', phone:'1234567891', states: ['GA'], country: 'IN'}).catch(console.error)
-// changeSubscription('5e7a62477aeda9be594f12b6', true, false).then(() =>
-//   getUser({ _id: '5e7a62477aeda9be594f12b6' }).then(console.log))
-
-
 async function changeSubscription(userID: string, emailSubscribed: boolean, phoneSubscribed: boolean) {
   const user = await User.findOne({ _id: userID })
   return user.changeSubscription(emailSubscribed, phoneSubscribed)
@@ -28,7 +23,7 @@ async function changeSubscription(userID: string, emailSubscribed: boolean, phon
 
 
 const Service = {
-  addUserSubscription,
+  addUser,
   editUser,
   getUser,
   changeSubscription
