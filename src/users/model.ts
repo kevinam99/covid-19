@@ -48,7 +48,6 @@ const userSchema = new Schema({
     trim: true
   },
   email: {
-    // eg. 'food'
     type: String,
     lowercase: true,
     unique: true,
@@ -58,15 +57,14 @@ const userSchema = new Schema({
     trim: true
   },
   phone: {
-    // eg. 'food'
     type: String,
     unique: true,
     sparse: true,
     minlength: [10, 'Text less than 10 char'],
     maxlength: [15, 'Text cannot exceed 15 chars'],
-    trim: true
+    trim: true,
+    validate: /^\+[1-9]\d{1,14}$/
   },
-  // used for country code to contact users
   country: {
     type: String,
     lowercase: true,
@@ -80,13 +78,11 @@ const userSchema = new Schema({
     validate: listValidator(locationList)
   },
   emailSubscribed: {
-    // subscribed
     type: Boolean,
     default: true,
     required: [true, '{PATH} is required']
   },
   phoneSubscribed: {
-    // subscribed
     type: Boolean,
     default: true,
     required: [true, '{PATH} is required']
