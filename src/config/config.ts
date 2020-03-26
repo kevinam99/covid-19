@@ -7,16 +7,8 @@ const Config = {
     dbString: process.env.DB_STRING || 'mongodb://localhost:27017/covid',
     emailToken: 'sdfsdf'
   },
-  locationList: [
-    'ga',
-    'ka',
-    'mh',
-    'kl',
-    'mp',
-    'hp'
-  ],
   countryList: [
-    'in'
+    'IN'
   ],
   statusMsgs: {
     201: 'Created',

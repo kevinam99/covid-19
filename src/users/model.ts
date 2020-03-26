@@ -31,7 +31,7 @@ function listValidator(allowedValues) {
     { validator: arr => arr.length > 0, msg: '{PATH} cannot be empty' },
     {
       validator: (categories: string[]) => {
-        const validList = categories.map(category => allowedValues.includes(category.toLowerCase()))
+        const validList = categories.map(category => allowedValues.includes(category)) // case sensitive comparison
         return !validList.includes(false)
       },
       msg: 'invalid entry `{VALUE}`'
@@ -67,9 +67,9 @@ const userSchema = new Schema({
   },
   country: {
     type: String,
-    lowercase: true,
+    upercase: true,
     required: true,
-    validate: (code: string) => supportedCountries.includes(code.toLowerCase())
+    validate: (code: string) => supportedCountries.includes(code.toUpperCase())
   },
   states: {
     // array of specific locations interested in
@@ -94,7 +94,7 @@ const userSchema = new Schema({
 
 // make whatever changes before saving
 userSchema.post('validate', async user => {
-  user['states'] = user['states'].map(val => val.toLowerCase()) // tslint:disable-line:no-string-literal
+  user['states'] = user['states'].map(val => val.toUpperCase()) // tslint:disable-line:no-string-literal
   return
 })
 

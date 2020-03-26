@@ -16,10 +16,10 @@ async function addUser(req, res) {
     name: Joi.string().lowercase().trim().min(2).max(20).empty('').default(),
     email: Joi.string().email({ minDomainAtoms: 2 }).lowercase().trim().empty('').default(),
     phone: Joi.string().trim().regex(/^\+[1-9]\d{1,14}$/).min(13).empty('').default(),
-    country: Joi.string().lowercase().valid(Config.getSupportedCountries()).required(),
+    country: Joi.string().uppercase().valid(Config.getSupportedCountries()).required(),
     emailSubscribed: Joi.boolean().default(true),
     phoneSubscribed: Joi.boolean().default(true),
-    states: Joi.array().items(Joi.string().lowercase()
+    states: Joi.array().items(Joi.string().uppercase()
       .valid(Config.getLocationList())).min(1).max(Config.getLocationList().length).required()
   })
 
@@ -89,10 +89,10 @@ async function updateUser(req, res) {
     name: Joi.string().lowercase().trim().min(2).max(20).empty('').default(),
     email: Joi.string().email({ minDomainAtoms: 2 }).lowercase().trim().empty('').default(),
     phone: Joi.string().trim().regex(/^\+[1-9]\d{1,14}$/).min(13).empty('').default(),
-    country: Joi.string().lowercase().valid(Config.getSupportedCountries()).required(),
+    country: Joi.string().uppercase().valid(Config.getSupportedCountries()).required(),
     emailSubscribed: Joi.boolean().required(),
     phoneSubscribed: Joi.boolean().required(),
-    states: Joi.array().items(Joi.string().lowercase()
+    states: Joi.array().items(Joi.string().uppercase()
       .valid(Config.getLocationList())).min(1).max(Config.getLocationList().length).required()
   })
 
