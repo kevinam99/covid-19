@@ -6,6 +6,9 @@ import * as express from 'express'
 import * as morgan from 'morgan'
 
 import Config from './config/'
+
+
+import messaging from './messaging/router'
 import users from './users/router'
 
 const app: express.Express = express()
@@ -25,6 +28,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 
+app.use('/messaging', messaging)
 app.use('/users', users)
 
 // catch 404 and forward to error handler
