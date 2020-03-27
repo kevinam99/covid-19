@@ -5,8 +5,8 @@ import * as cookieParser from 'cookie-parser'
 import * as express from 'express'
 import * as morgan from 'morgan'
 
-import users from './users/router'
 import Config from './config/'
+import users from './users/router'
 
 const app: express.Express = express()
 const logger = Config.getLogger()
