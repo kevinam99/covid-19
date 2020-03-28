@@ -4,7 +4,7 @@ import Config from '../config'
 
 const logger = Config.getLogger()
 const Schema = mongoose.Schema
-const locationList = Config.getLocationList()
+const stateList = Config.getIndiaStates()
 const supportedCountries = Config.getSupportedCountries()
 
 mongoose.set('useNewUrlParser', true)
@@ -26,76 +26,40 @@ db.on('open', () => {
 })
 
 
-function listValidator(allowedValues) {
-  return [
-    { validator: arr => arr.length > 0, msg: '{PATH} cannot be empty' },
-    {
-      validator: (categories: string[]) => {
-        const validList = categories.map(category => allowedValues.includes(category)) // case sensitive comparison
-        return !validList.includes(false)
-      },
-      msg: 'invalid entry `{VALUE}`'
-    }
-  ]
-}
-
 const userSchema = new Schema({
-  name: {
+  pincode: {
     type: String,
+    required: true,
+    indexed: true,
     lowercase: true,
-    minlength: [2, 'Text less than 2 char'],
-    maxlength: [20, 'Text cannot exceed 20 chars'],
-    trim: true
-  },
-  email: {
-    type: String,
-    lowercase: true,
-    unique: true,
-    sparse: true,
-    minlength: [3, 'Text less than 3 char'],
-    maxlength: [50, 'Text cannot exceed 30 chars'],
+    minlength: [6, 'Text less than 6 char'],
+    maxlength: [6, 'Text cannot exceed 6 chars'],
     trim: true
   },
   phone: {
     type: String,
     unique: true,
-    sparse: true,
-    minlength: [10, 'Text less than 10 char'],
+    required: true,
+    minlength: [10, 'Text cannot be less than 10 char'],
     maxlength: [15, 'Text cannot exceed 15 chars'],
     trim: true,
     validate: /^\+[1-9]\d{1,14}$/
   },
   country: {
     type: String,
-    upercase: true,
+    uppercase: true,
     required: true,
-    validate: (code: string) => supportedCountries.includes(code.toUpperCase())
+    validate: (country: string) => supportedCountries.includes(country.toUpperCase())
   },
-  states: {
-    // array of specific locations interested in
-    type: [String],
+  state: {
+    type: String,
+    indexed: true,
     required: true,
-    validate: listValidator(locationList)
-  },
-  emailSubscribed: {
-    type: Boolean,
-    default: true,
-    required: [true, '{PATH} is required']
-  },
-  phoneSubscribed: {
-    type: Boolean,
-    default: true,
-    required: [true, '{PATH} is required']
+    uppercase: true,
+    validate: (state: string) => stateList.includes(state.toUpperCase())
   }
 }, {
   timestamps: true
-})
-
-
-// make whatever changes before saving
-userSchema.post('validate', async user => {
-  user['states'] = user['states'].map(val => val.toUpperCase()) // tslint:disable-line:no-string-literal
-  return
 })
 
 

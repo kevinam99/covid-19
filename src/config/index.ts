@@ -1,8 +1,10 @@
 'use strict'
 
 import Config from './config'
-import IndianStates from './indianStates'
 import Logger from './logger'
+
+import IndiaStates from './indiaStates'
+import PincodeMap from './pincodeMap'
 
 const env = process.env.NODE_ENV || 'development'
 const envtConfig = Config[env] // env specific values
@@ -11,8 +13,8 @@ const envtConfig = Config[env] // env specific values
 export default {
   getDbConnectionString: () => envtConfig.dbString,
   getEnv: (): string => env,
-  getEmailToken: (): string => envtConfig.emailToken,
-  getLocationList: (): string[] => IndianStates,
+  getIndiaStates: (): string[] => IndiaStates,
+  getPincodeMap: (): object => PincodeMap,
   getLogger: () => Logger,
   getStatusMsg: (code: number): string => Config.statusMsgs[code] || 'Something went wrong',
   getSupportedCountries: (): string[] => Config.countryList

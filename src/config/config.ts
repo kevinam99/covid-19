@@ -1,16 +1,15 @@
 const Config = {
   development: {
-    dbString: process.env.DB_STRING || 'mongodb://localhost:27017/covid',
-    emailToken: 'sdfsdf'
+    dbString: process.env.DB_STRING || 'mongodb://localhost:27017/covid'
   },
   production: {
-    dbString: process.env.DB_STRING || 'mongodb://localhost:27017/covid',
-    emailToken: 'sdfsdf'
+    dbString: process.env.DB_STRING || 'mongodb://localhost:27017/covid'
   },
   countryList: [
     'IN'
   ],
   statusMsgs: {
+    200: 'Success',
     201: 'Created',
     202: 'Request Accepted',
     400: 'Oops! You seem to have sent some wrong data',

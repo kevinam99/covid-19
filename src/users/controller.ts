@@ -12,15 +12,10 @@ async function addUser(req, res) {
   use this regex ^(\+[1-9]|[0-9])\d{1,14}$
   This will accept numbers like: 009177.., 917798.., 07798.., 7798.. etc
   */
+  //  setting phone length to 13 because 10 digits and `+91` = 13
   const schema = Joi.object().keys({
-    name: Joi.string().lowercase().trim().min(2).max(20).empty('').default(),
-    email: Joi.string().email({ minDomainAtoms: 2 }).lowercase().trim().empty('').default(),
-    phone: Joi.string().trim().regex(/^\+[1-9]\d{1,14}$/).min(13).empty('').default(),
-    country: Joi.string().uppercase().valid(Config.getSupportedCountries()).required(),
-    emailSubscribed: Joi.boolean().default(true),
-    phoneSubscribed: Joi.boolean().default(true),
-    states: Joi.array().items(Joi.string().uppercase()
-      .valid(Config.getLocationList())).min(1).max(Config.getLocationList().length).required()
+    phone: Joi.string().trim().length(13).regex(/^\+[1-9]\d{1,14}$/).required(),
+    pincode: Joi.string().trim().length(6).required()
   })
 
   let validatedRequest
@@ -34,94 +29,11 @@ async function addUser(req, res) {
   }
 
   try {
-    const user = await Service.addUser(validatedRequest)
+    const user = await Service.addUser(validatedRequest.phone, validatedRequest.pincode.toString())
     return res.status(201).json(user)
   } catch (err) {
-    logger.error(`Error when creating user: ${err.message}`)
+    logger.error(`Error when adding user: ${err.message}`)
     return errorResponse(res, err.message, 400)
-  }
-}
-
-async function changeSubscription(req, res) {
-  const userID = req.params.userID
-
-  const schema = Joi.object().keys({
-    emailSubscribed: Joi.boolean().required(),
-    phoneSubscribed: Joi.boolean().required()
-  })
-
-  let validatedRequest
-
-  try {
-    validatedRequest = await schema.validate(req.body, { abortEarly: false })
-  } catch (validationError) {
-    const errorMsg = validationError.details.map(e => e.message)
-    logger.warn(`Validation error while attempting to create User: ${errorMsg}`)
-    return errorResponse(res, errorMsg, 400)
-  }
-
-  const { emailSubscribed, phoneSubscribed } = validatedRequest
-
-  try {
-    await Service.changeSubscription(userID, emailSubscribed, phoneSubscribed)
-    return res.status(202).json({ message: Config.getStatusMsg(202) })
-  } catch (err) {
-    return errorResponse(res, err.message)
-  }
-
-
-  return res.status(200).json({ id: 101, status: 'unsubscribed' })
-}
-
-async function getUser(req, res) {
-  const userID = req.params.userID.trim()
-
-  const user = await Service.getUserByID(userID)
-
-  return res.json(user)
-}
-
-async function updateUser(req, res) {
-
-  const userID = req.params.userID.trim()
-
-  const schema = Joi.object().keys({
-    name: Joi.string().lowercase().trim().min(2).max(20).empty('').default(),
-    email: Joi.string().email({ minDomainAtoms: 2 }).lowercase().trim().empty('').default(),
-    phone: Joi.string().trim().regex(/^\+[1-9]\d{1,14}$/).min(13).empty('').default(),
-    country: Joi.string().uppercase().valid(Config.getSupportedCountries()).required(),
-    emailSubscribed: Joi.boolean().required(),
-    phoneSubscribed: Joi.boolean().required(),
-    states: Joi.array().items(Joi.string().uppercase()
-      .valid(Config.getLocationList())).min(1).max(Config.getLocationList().length).required()
-  })
-
-  let validatedRequest
-
-  try {
-    validatedRequest = await schema.validate(req.body, { abortEarly: false })
-  } catch (validationError) {
-    const errorMsg = validationError.details.map(e => e.message)
-    logger.warn(`Validation error while attempting to create User: ${errorMsg}`)
-    return errorResponse(res, errorMsg, 400)
-  }
-
-  try {
-    // make sure optional fields are removed if not present so they don't overwrite existing values in DB
-    if (validatedRequest.name == null) {
-      delete validatedRequest.name
-    }
-    if (validatedRequest.email == null) {
-      delete validatedRequest.email
-    }
-    if (validatedRequest.phone == null) {
-      delete validatedRequest.phone
-    }
-
-    await Service.updateUser(userID, validatedRequest)
-    return res.status(202).json({ message: Config.getStatusMsg(202) })
-  } catch (err) {
-    return errorResponse(res, err.message)
   }
 }
 
@@ -131,8 +43,5 @@ function errorResponse(res, message: string, status = 500) {
 
 
 export default {
-  addUser,
-  changeSubscription,
-  getUser,
-  updateUser
+  addUser
 }

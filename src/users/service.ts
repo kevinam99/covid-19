@@ -1,28 +1,31 @@
 import User from './model'
 
-async function addUser(attributes) {
+import Config from '../config'
+
+const logger = Config.getLogger()
+const pincodeMap = Config.getPincodeMap()
+
+async function addUser(phone: string, pincode: string) {
+  const state = pincodeMap[pincode]
+
+  if (!state) {
+    const errorMessage = `Pincode ${pincode} is invalid`
+    logger.warn(errorMessage)
+    throw Error(errorMessage)
+  }
+
+  const attributes = {
+    phone,
+    pincode,
+    state,
+    country: 'IN'
+  }
   const user = User(attributes)
   return user.save()
 }
 
-async function updateUser(userID: string, attributes) {
-  return User.findOneAndUpdate({ _id: userID }, attributes)
-}
-
-async function getUserByID(userID) {
-  return User.findOne({ _id: userID })
-}
-
-async function changeSubscription(userID: string, emailSubscribed: boolean, phoneSubscribed: boolean) {
-  return updateUser(userID, { emailSubscribed, phoneSubscribed })
-}
-
-
 const Service = {
-  addUser,
-  updateUser,
-  getUserByID,
-  changeSubscription
+  addUser
 }
 
 export default Service
