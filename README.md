@@ -82,6 +82,24 @@ PIN prefix	ISO 3166-2:IN	Region
 90–99	APS	Army Postal Service
 ```
 
+
+## JSON generator format
+https://next.json-generator.com/
+```
+[
+  {
+    'repeat(10)': {
+      state: '{{state()}}',
+      country: 'IN',
+      pincode: '{{integer(111111, 999999)}}',
+      phone: '+91{{phone("xxxxxxxxxx")}}',
+      createdAt: '{{date()}}',
+      updatedAt: '{{date()}}'
+    }
+  }
+]
+```
+
 ## License
 
 Propreitary
