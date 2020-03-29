@@ -7,7 +7,7 @@ const logger = Config.getLogger()
 
 async function addUser(req, res) {
   /*
-  Following the E.123 phone number standard for which the regex is: ^\+[1-9]\d{1,14}$
+  Following the E.164 phone number standard for which the regex is: ^\+[1-9]\d{1,14}$
   To accept phone numbers with leading 0s instead of +91 format exclusively,
   use this regex ^(\+[1-9]|[0-9])\d{1,14}$
   This will accept numbers like: 009177.., 917798.., 07798.., 7798.. etc
