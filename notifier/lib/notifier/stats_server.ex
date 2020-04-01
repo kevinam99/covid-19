@@ -60,7 +60,8 @@ defmodule Notifier.StatsServer do
     data = Map.put(data, :state_stats, state_stats)
     data = Map.put(data, :country_stats, country_stats)
 
-    # DynamicSupervisor.start_child(Notifier.DynamicSupervisor, {Notifier.Pipeline, []})
+    # Once stats are all loaded start the notification pipeline
+    DynamicSupervisor.start_child(Notifier.DynamicSupervisor, {Notifier.Pipeline, []})
     {:noreply, data}
   end
 end
