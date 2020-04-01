@@ -1,7 +1,7 @@
 defmodule Notifier.StatsServer do
   use GenServer
 
-  @initial_state %{:country_stats => %{}, :district_stats => %{}, :state_stats => %{}}
+  @initial_state %{country_stats: %{}, district_stats: %{}, state_stats: %{}}
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
@@ -50,10 +50,14 @@ defmodule Notifier.StatsServer do
   @impl true
   def handle_info(:load, data) do
     {:ok, district_stats} = Notifier.CsvProcessor.process_district_file()
+    {:ok, state_stats} = Notifier.CsvProcessor.process_state_file()
+    {:ok, country_stats} = Notifier.CsvProcessor.process_country_file()
 
     data = Map.put(data, :district_stats, district_stats)
+    data = Map.put(data, :state_stats, state_stats)
+    data = Map.put(data, :country_stats, country_stats)
 
-    DynamicSupervisor.start_child(Notifier.DynamicSupervisor, {Notifier.Pipeline, []})
+    # DynamicSupervisor.start_child(Notifier.DynamicSupervisor, {Notifier.Pipeline, []})
     {:noreply, data}
   end
 end
