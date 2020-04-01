@@ -4,7 +4,6 @@ defmodule Notifier.SMS do
   require Logger
 
   def send_sms(to, state, country) do
-    
     message = build_sms(country, state)
 
     Logger.info("Sent #{message} to #{to}")
