@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Coronavirus Updates</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+  <link rel="shortcut icon" type="image/png" href="./logo.png" />
+
+  <meta name="description" content="Covid-19 latest verified news and updates straight to WhatsApp">
+  <meta name="keywords" content="coronavirus, covid, india, news, updates, phone, whatsapp, subscribe">
+  <meta name="author" content="Aaron">
+  <meta name="Distribution" content="Global">
+  <meta name="Rating" content="General">
+  <meta name="Robots" content="INDEX,FOLLOW">
+  <meta name="Revisit-after" content="10 Days">
+
+  <!-- bootstrap and font-awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  <!-- custom css -->
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+
+<body>
+
+  <h2 class="title">Coronavirus updates on WhatsApp</h2>
+
+  <div class="description">
+    <div class="container">
+      <!-- <p>
+        Incorrect news and updates have been rampant and has been making life a lot more difficult.
+      </p>
+
+      <p>
+        We'll send you the most relevant news straight to your phone so you can stay safe and make informed choices.
+      </p> -->
+      <p>
+        Get the latest updates regarding supplies and suspected and confirmed cases in your location.
+        Soon you'll also be able to order supplies and ask for help.
+      </p>
+      <p>
+        Enter your location zip/postal code and mobile number. 
+      </p>
+    </div>
+  </div>
+
+  <div class="subscribe">
+    <div class="container">
+      <div class="alert alert-danger text-center alert-dismissible fade show d-none" id="error" role="alert">
+        <span>Oops.. Something went wrong, Please try again!</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- <div class="alert alert-danger text-center alert-dismissible fade show d-none" id="duplicate" role="alert">
+        <span>User has already subscribed to this service!</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="alert alert-success text-center alert-dismissible fade show d-none" id="success" role="alert">
+        <span>User has already subscribed to this service!</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="alert alert-danger text-center alert-dismissible fade show d-none" id="pinError" role="alert">
+        <span>Phone number should match format +91<10 digits></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="alert alert-danger text-center alert-dismissible fade show d-none" id="phoneError" role="alert">
+        <span>pin code should be 6 digits long</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> -->
+
+      <h4 id="messageText">Stay Safe</h4>
+
+      <form id="form">
+        <div class="form-group">
+          <label for="pin">Pin Code *</label> <i class="fa fa-map-marker"></i>
+          <input type="number" class="form-control" id="pin" aria-describedby="pinHelp" placeholder="403602">
+        </div>
+        <div class="form-group">
+          <label for="phone">Mobile Number *</label> <i class="fa fa-whatsapp"></i>
+          <input type="tel" class="form-control" id="phone" aria-describedby="phoneHelp" placeholder="+917824182345">
+        </div>
+        <div class="form-check">
+          <input type="checkbox" required class="form-check-input" id="exampleCheck1">
+          <label class="form-check-label" for="exampleCheck1">I agree to receive updates over WhatsApp</label>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <span class="text-muted">Made with <span id="heart">&hearts;</span> at <a href="https://coronathon.in">Coronathon.in</span>
+    </div>
+  </footer>
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script async type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script async type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <!-- <script type="text/javascript" async type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
+  
+  <script async type="text/javascript" src="./index.js"></script>
+</body>
+
+</html>
