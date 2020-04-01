@@ -23,6 +23,7 @@ defmodule Notifier.MixProject do
   defp deps do
     [
       {:broadway, "~> 0.6.0"},
+      {:csv, "~> 2.3.1"},
       {:gen_stage, "~> 1.0.0"},
       {:mongodb_driver, "~> 0.6"}
     ]
