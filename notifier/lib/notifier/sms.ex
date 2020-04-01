@@ -3,16 +3,17 @@ defmodule Notifier.SMS do
 
   require Logger
 
-  def send_sms(to, state, country) do
-    message = build_sms(country, state)
+  def send_sms(to, pin_code, state, country) do
+    message = build_sms(pin_code, state, country)
 
     Logger.info("Sent #{message} to #{to}")
     :ok
   end
 
-  defp build_sms(state, country) do
-    {:ok, country_stats} = Notifier.Stats.get_stats_for_country(country)
-    {:ok, state_stats} = Notifier.Stats.get_stats_for_state(state)
+  defp build_sms(pin, state, country) do
+    {:ok, country_stats} = Notifier.StatsServer.get_stats_for_country()
+    {:ok, district_stats} = Notifier.StatsServer.get_stats_for_district(pin)
+    {:ok, state_stats} = Notifier.StatsServer.get_stats_for_state(state)
 
     """
     Country: #{country}

@@ -8,8 +8,9 @@ defmodule Notifier.Application do
   def start(_type, _args) do
     children = [
       # Starts a worker by calling: Notifier.Worker.start_link(arg)
-      {Notifier.DB, []},
-      {Notifier.Pipeline, []}
+      {Notifier.StatsServer, []},
+      {DynamicSupervisor, strategy: :one_for_one, name: Notifier.DynamicSupervisor},
+      {Notifier.DB, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
