@@ -49,9 +49,12 @@ defmodule Notifier.StatsServer do
   # Generate all the stats needed
   @impl true
   def handle_info(:load, data) do
-    {:ok, district_stats} = Notifier.CsvProcessor.process_district_file()
-    {:ok, state_stats} = Notifier.CsvProcessor.process_state_file()
-    {:ok, country_stats} = Notifier.CsvProcessor.process_country_file()
+    district = Task.async(Notifier.CsvProcessor, :process_district_file, [])
+    state = Task.async(Notifier.CsvProcessor, :process_state_file, [])
+    country = Task.async(Notifier.CsvProcessor, :process_country_file, [])
+    {:ok, district_stats} = Task.await(district)
+    {:ok, state_stats} = Task.await(state)
+    {:ok, country_stats} = Task.await(country)
 
     data = Map.put(data, :district_stats, district_stats)
     data = Map.put(data, :state_stats, state_stats)
