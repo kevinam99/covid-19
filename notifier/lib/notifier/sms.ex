@@ -43,12 +43,15 @@ defmodule Notifier.SMS do
       ---India---
       Hospitalized: #{country_stats[:hospitalized] || 0}
       Deaths: #{country_stats[:deaths] || 0}
+
       ---#{@state_map[state] || state}---
       Hospitalized: #{state_stats[:hospitalized] || 0}
       Deaths: #{state_stats[:deaths] || 0}
+
       ---#{state_stats[:district] || 'District'}---
       Hospitalized: #{district_stats[:hospitalized] || 0}
       Deaths: #{district_stats[:deaths] || 0}
+      
       Subscribe: bit.ly/coronadailyupdates
     """
   end
