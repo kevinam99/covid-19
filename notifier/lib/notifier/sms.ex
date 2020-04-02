@@ -1,6 +1,7 @@
 defmodule Notifier.SMS do
   @api Application.fetch_env!(:notifier, :sms_url)
   @auth_key Application.fetch_env!(:notifier, :sms_auth_key)
+  @state_map Application.fetch_env!(:notifier, :state_map)
 
   require Logger
 
@@ -32,25 +33,23 @@ defmodule Notifier.SMS do
     :ok
   end
 
-  defp build_sms(pin, state, country) do
+  defp build_sms(pin, state, _country) do
     {:ok, country_stats} = Notifier.StatsServer.get_stats_for_country()
     {:ok, district_stats} = Notifier.StatsServer.get_stats_for_district(pin)
     {:ok, state_stats} = Notifier.StatsServer.get_stats_for_state(state)
 
     """
-    Country: #{country}
-    Deaths: #{country_stats[:deaths] || 0}
-    Hospitalized: #{country_stats[:hospitalized] || 0}
-    Recovered: #{country_stats[:recovered] || 0}
-    State: #{state}
-    Deaths: #{state_stats[:deaths] || 0}
-    Hospitalized: #{state_stats[:hospitalized] || 0}
-    Recovered: #{state_stats[:recovered] || 0}
-    District: #{district_stats[:district] || 0}
-    Deaths: #{district_stats[:deaths] || 0}
-    Hospitalized: #{district_stats[:hospitalized] || 0}
-    Recovered: #{district_stats[:recovered] || 0}
-    Subscribe: bit.ly/coronadailyupdates
+    *Coronavirus Numbers*
+      ---India---
+      Hospitalized: #{country_stats[:hospitalized] || 0}
+      Deaths: #{country_stats[:deaths] || 0}
+      ---#{@state_map[state] || state}---
+      Hospitalized: #{state_stats[:hospitalized] || 0}
+      Deaths: #{state_stats[:deaths] || 0}
+      ---#{state_stats[:district] || 'District'}---
+      Hospitalized: #{district_stats[:hospitalized] || 0}
+      Deaths: #{district_stats[:deaths] || 0}
+      Subscribe: bit.ly/coronadailyupdates
     """
   end
 
