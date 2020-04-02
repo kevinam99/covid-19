@@ -39,17 +39,18 @@ defmodule Notifier.SMS do
 
     """
     Country: #{country}
-    Deaths: #{country_stats[:deaths]}
-    Hospitalized: #{country_stats[:hospitalized]}
-    Recovered: #{country_stats[:recovered]}
+    Deaths: #{country_stats[:deaths] || 0}
+    Hospitalized: #{country_stats[:hospitalized] || 0}
+    Recovered: #{country_stats[:recovered] || 0}
     State: #{state}
-    Deaths: #{state_stats[:deaths]}
-    Hospitalized: #{state_stats[:hospitalized]}
-    Recovered: #{state_stats[:recovered]}
-    District: #{district_stats[:district]}
-    Deaths: #{district_stats[:deaths]}
-    Hospitalized: #{district_stats[:hospitalized]}
-    Recovered: #{district_stats[:recovered]}
+    Deaths: #{state_stats[:deaths] || 0}
+    Hospitalized: #{state_stats[:hospitalized] || 0}
+    Recovered: #{state_stats[:recovered] || 0}
+    District: #{district_stats[:district] || 0}
+    Deaths: #{district_stats[:deaths] || 0}
+    Hospitalized: #{district_stats[:hospitalized] || 0}
+    Recovered: #{district_stats[:recovered] || 0}
+    Subscribe: bit.ly/coronadailyupdates
     """
   end
 
