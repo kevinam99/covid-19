@@ -43,7 +43,7 @@ defmodule Notifier.CsvProcessor do
         stat, acc ->
           Map.put(
             acc,
-            stat["state"],
+            stat["State"],
             new_state_map.(stat)
           )
       end)
