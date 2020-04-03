@@ -1,6 +1,10 @@
 defmodule Notifier.CsvProcessor do
-  @district_file "lib/district.csv"
-  @state_file "lib/state.csv"
+  require Logger
+
+  @file_urls [
+    state: "https://coronadailyupdates.s3.ap-south-1.amazonaws.com/state",
+    district: "https://coronadailyupdates.s3.ap-south-1.amazonaws.com/district"
+  ]
 
   def process_district_file do
     new_pin_map = fn stat ->
@@ -12,19 +16,25 @@ defmodule Notifier.CsvProcessor do
       }
     end
 
-    district_data =
-      File.stream!(@district_file)
-      |> CSV.decode!(headers: true)
-      |> Enum.reduce(%{}, fn
-        stat, acc ->
-          Map.put(
-            acc,
-            stat["Pincode"],
-            new_pin_map.(stat)
-          )
-      end)
-
-    {:ok, district_data}
+      with {:ok, data} <- fetch_data(@file_urls[:district]) do
+        district_data =
+          data
+          |> String.trim()
+          |> String.split("\n")
+          |> CSV.decode!(headers: true)
+          |> Enum.reduce(%{}, fn
+            stat, acc ->
+              Map.put(
+                acc,
+                stat["Pincode"],
+                new_pin_map.(stat)
+              )
+          end)
+  
+        {:ok, district_data}
+      else
+        err -> err
+      end
   end
 
   def process_state_file do
@@ -36,19 +46,25 @@ defmodule Notifier.CsvProcessor do
       }
     end
 
-    district_data =
-      File.stream!(@state_file)
-      |> CSV.decode!(headers: true)
-      |> Enum.reduce(%{}, fn
-        stat, acc ->
-          Map.put(
-            acc,
-            stat["State"],
-            new_state_map.(stat)
-          )
-      end)
+    with {:ok, data} <- fetch_data(@file_urls[:state]) do
+      state_data =
+        data
+        |> String.trim()
+        |> String.split("\n")
+        |> CSV.decode!(headers: true)
+        |> Enum.reduce(%{}, fn
+          stat, acc ->
+            Map.put(
+              acc,
+              stat["State"],
+              new_state_map.(stat)
+            )
+        end)
 
-    {:ok, district_data}
+      {:ok, state_data}
+    else
+      err -> err
+    end
   end
 
   def process_country_file do
@@ -72,5 +88,19 @@ defmodule Notifier.CsvProcessor do
       end)
 
     {:ok, country_stats}
+  end
+
+  defp fetch_data(url) do
+    with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <- HTTPoison.get(url) do
+      {:ok, body}
+    else
+      {:ok, %HTTPoison.Response{status_code: code, body: body}} ->
+        Logger.error("Error when fetching state file with code #{code}. Error: #{body}")
+        {:error, body}
+
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        Logger.error("HTTPoison/Network error when fetching state file with reason #{reason}.")
+        {:error, reason}
+    end
   end
 end
