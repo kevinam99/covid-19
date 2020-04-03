@@ -1,6 +1,7 @@
 import User from './model'
 
 import Config from '../config'
+import SmsService from '../messaging/service'
 
 const logger = Config.getLogger()
 const pincodeMap = Config.getPincodeMap()
@@ -24,8 +25,23 @@ async function addUser(phone: string, pincode: string) {
   return user.save()
 }
 
+async function sendWelcomeSms(to: string) {
+  const message = 'Thank you for subscribing! You will begin getting daily updates soon'
+
+  try {
+    to = to.slice(3, 13) // remove +91
+    await SmsService.sendSms(to, message)
+  } catch (err) {
+    logger.error(`Error sending welcome sms to ${to}`)
+    logger.error(`${err.message}`)
+    return false
+  }
+  return true
+}
+
 const Service = {
-  addUser
+  addUser,
+  sendWelcomeSms
 }
 
 export default Service

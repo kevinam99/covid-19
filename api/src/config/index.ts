@@ -16,6 +16,8 @@ export default {
   getIndiaStates: (): string[] => IndiaStates,
   getPincodeMap: (): object => PincodeMap,
   getLogger: () => Logger,
+  getSmsApiUrl: (): string => envtConfig.smsApiUrl,
+  getSmsApiKey: (): string => envtConfig.smsApiKey,
   getStatusMsg: (code: number): string => Config.statusMsgs[code] || 'Something went wrong',
   getSupportedCountries: (): string[] => Config.countryList
 }
