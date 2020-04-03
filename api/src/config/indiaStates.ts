@@ -1,5 +1,11 @@
-const indiaStates = ['AP', 'AR', 'AS', 'BR', 'CG', 'GA', 'GJ', 'HR', 'HP', 'JK', 'JH', 'KA', 'KL',
-  'MP', 'MH', 'MN', 'ML', 'MZ', 'NL', 'OR', 'PB', 'RJ', 'SK', 'TN', 'TR', 'UK', 'UP', 'WB', 'TN', 'TR',
-  'AN', 'CH', 'DH', 'DD', 'DL', 'LD', 'PY']
+const indiaStates = [
+  'AN', 'AP', 'AR', 'AS', 'BR', 'CG',
+  'CH', 'DD', 'DH', 'DL', 'GA', 'GJ',
+  'HP', 'HR', 'JH', 'JK', 'KA', 'KL',
+  'LD', 'MH', 'ML', 'MN', 'MP', 'MZ',
+  'NL', 'OR', 'PB', 'PY', 'RJ', 'SK',
+  'TN', 'TS', 'TR', 'TR', 'UK', 'UP',
+  'WB'
+]
 
 export default indiaStates
