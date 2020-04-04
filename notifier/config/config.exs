@@ -45,4 +45,10 @@ config :notifier,
   sms_url: "https://api.msg91.com/api/v2/sendsms",
   state_map: state_map
 
+config :logger,
+  compile_time_purge_matching: [
+    [application: :mongodb_driver],
+    [level_lower_than: :info]
+  ]
+
 import_config "#{Mix.env()}.exs"

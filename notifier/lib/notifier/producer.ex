@@ -1,6 +1,6 @@
 defmodule Notifier.Producer do
   use GenStage
-  
+
   require Logger
 
   def start_link(opts) do
