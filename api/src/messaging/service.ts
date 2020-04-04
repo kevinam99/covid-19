@@ -7,7 +7,7 @@ const apiKey = Config.getSmsApiKey()
 
 async function sendSms(to: string, message: string) {
   const body = {
-    sender: 'SOCKET',
+    sender: 'CORONA',
     route: '4',
     country: 'IN',
     sms: [

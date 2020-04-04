@@ -58,7 +58,7 @@ defmodule Notifier.SMS do
 
   defp send_sms(to, message) do
     data = %{
-      sender: "SOCKET",
+      sender: "CORONA",
       route: "4",
       country: "IN",
       sms: [
