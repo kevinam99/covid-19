@@ -23,9 +23,9 @@ defmodule Notifier.CsvProcessor do
         |> String.split("\n")
         |> CSV.decode!(headers: true)
         |> Enum.map(&new_country_map.(&1))
-        |> List.first
-      
-      IO.inspect country_data
+        |> List.first()
+
+      IO.inspect(country_data)
       {:ok, country_data}
     else
       err -> err
@@ -42,25 +42,25 @@ defmodule Notifier.CsvProcessor do
       }
     end
 
-      with {:ok, data} <- fetch_data(@file_urls[:district]) do
-        district_data =
-          data
-          |> String.trim()
-          |> String.split("\n")
-          |> CSV.decode!(headers: true)
-          |> Enum.reduce(%{}, fn
-            stat, acc ->
-              Map.put(
-                acc,
-                stat["Pincode"],
-                new_pin_map.(stat)
-              )
-          end)
-  
-        {:ok, district_data}
-      else
-        err -> err
-      end
+    with {:ok, data} <- fetch_data(@file_urls[:district]) do
+      district_data =
+        data
+        |> String.trim()
+        |> String.split("\n")
+        |> CSV.decode!(headers: true)
+        |> Enum.reduce(%{}, fn
+          stat, acc ->
+            Map.put(
+              acc,
+              stat["Pincode"],
+              new_pin_map.(stat)
+            )
+        end)
+
+      {:ok, district_data}
+    else
+      err -> err
+    end
   end
 
   def process_state_file do
