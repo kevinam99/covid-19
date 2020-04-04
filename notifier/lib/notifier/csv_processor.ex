@@ -25,7 +25,6 @@ defmodule Notifier.CsvProcessor do
         |> Enum.map(&new_country_map.(&1))
         |> List.first()
 
-      IO.inspect(country_data)
       {:ok, country_data}
     else
       err -> err
