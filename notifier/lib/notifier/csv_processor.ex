@@ -2,9 +2,35 @@ defmodule Notifier.CsvProcessor do
   require Logger
 
   @file_urls [
-    state: "https://coronadailyupdates.s3.ap-south-1.amazonaws.com/state",
-    district: "https://coronadailyupdates.s3.ap-south-1.amazonaws.com/district"
+    country: "https://coronadailyupdates.s3.ap-south-1.amazonaws.com/country_mohw",
+    district: "https://coronadailyupdates.s3.ap-south-1.amazonaws.com/district",
+    state: "https://coronadailyupdates.s3.ap-south-1.amazonaws.com/state_mohw"
   ]
+
+  def process_country_file do
+    new_country_map = fn stats ->
+      %{
+        deaths: stats["Deceased"],
+        hospitalized: stats["Hospitalized"],
+        recovered: stats["Recovered"]
+      }
+    end
+
+    with {:ok, data} <- fetch_data(@file_urls[:country]) do
+      country_data =
+        data
+        |> String.trim()
+        |> String.split("\n")
+        |> CSV.decode!(headers: true)
+        |> Enum.map(&new_country_map.(&1))
+        |> List.first
+      
+      IO.inspect country_data
+      {:ok, country_data}
+    else
+      err -> err
+    end
+  end
 
   def process_district_file do
     new_pin_map = fn stat ->
@@ -65,29 +91,6 @@ defmodule Notifier.CsvProcessor do
     else
       err -> err
     end
-  end
-
-  def process_country_file do
-    add_state_stats = fn current, {_name, value} ->
-      %{
-        deaths: current[:deaths] + String.to_integer(value[:deaths]),
-        hospitalized: current[:hospitalized] + String.to_integer(value[:hospitalized]),
-        recovered: current[:recovered] + String.to_integer(value[:recovered])
-      }
-    end
-
-    {:ok, state_stats} = process_state_file()
-
-    country_stats = %{:deaths => 0, :hospitalized => 0, :recovered => 0}
-
-    country_stats =
-      state_stats
-      |> Enum.reduce(country_stats, fn
-        stat, acc ->
-          add_state_stats.(acc, stat)
-      end)
-
-    {:ok, country_stats}
   end
 
   defp fetch_data(url) do
