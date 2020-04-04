@@ -5,6 +5,7 @@ defmodule Notifier.Application do
 
   def start(_type, _args) do
     children = [
+      {Notifier, []},
       {Notifier.StatsServer, []},
       {DynamicSupervisor, strategy: :one_for_one, name: Notifier.DynamicSupervisor},
       {Notifier.DB, []}
