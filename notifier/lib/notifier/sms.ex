@@ -48,7 +48,7 @@ defmodule Notifier.SMS do
       Hospitalized: #{state_stats[:hospitalized] || 0}
       Deaths: #{state_stats[:deaths] || 0}
 
-      ---#{state_stats[:district] || 'District'}---
+      ---#{district_stats[:district] || 'District'}---
       Hospitalized: #{district_stats[:hospitalized] || 0}
       Deaths: #{district_stats[:deaths] || 0}
       
