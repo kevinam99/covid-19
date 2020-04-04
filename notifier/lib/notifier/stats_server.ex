@@ -1,11 +1,10 @@
 defmodule Notifier.StatsServer do
   use GenServer
 
-  # @initial_state %{country_stats: %{}, district_stats: %{}, state_stats: %{}}
-  @initial_state 0
+  @initial_state %{country_stats: %{}, district_stats: %{}, state_stats: %{}}
 
   @refresh_interval Application.fetch_env!(:notifier, :data_refresh_interval)
-  
+
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
@@ -63,11 +62,8 @@ defmodule Notifier.StatsServer do
     data = Map.put(data, :state_stats, state_stats)
     data = Map.put(data, :country_stats, country_stats)
 
-    
     Process.send_after(@refresh_interval, :load, 1000)
 
-    # Once stats are all loaded start the notification pipeline
-    # DynamicSupervisor.start_child(Notifier.DynamicSupervisor, {Notifier.Pipeline, []})
     {:noreply, data}
   end
 end
