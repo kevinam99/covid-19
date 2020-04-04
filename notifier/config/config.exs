@@ -39,6 +39,7 @@ state_map = %{
 }
 
 config :notifier,
+  data_refresh_interval: 1000 * 60 * 60,
   db_url: "mongodb://localhost:27017/covid",
   sms_auth_key: "HELLO WORLD",
   sms_url: "https://api.msg91.com/api/v2/sendsms",
