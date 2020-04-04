@@ -1,0 +1,52 @@
+# This is mostly managed by certbot(ssl certificate tool). Only add locations if needed
+server {
+    server_name coronadailyupdates.org www.coronadailyupdates.org; # managed by Certbot
+
+    if ($host = www.coronadailyupdates.org) {
+        return 301 https://coronadailyupdates.org$request_uri;
+    } # managed by Certbot
+
+
+	location / {
+        # try_files $uri $uri/ =404;
+        alias /home/website/;
+        index index.html;
+        try_files $uri index.html =404;
+	}
+    
+    location /custom-stats {
+        alias /home/custom-stats/;
+        index index.html;
+        try_files $uri index.html =404;
+    }
+
+    location /api {
+        rewrite ^/api(.*) $1 break;
+        proxy_pass http://localhost:3000;
+    }
+
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/coronadailyupdates.org/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/coronadailyupdates.org/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+
+server {
+    if ($host = www.coronadailyupdates.org) {
+        return 301 https://coronadailyupdates.org$request_uri;
+    } # managed by Certbot
+
+
+    if ($host = coronadailyupdates.org) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+	listen 80 ;
+	listen [::]:80 ;
+    server_name coronadailyupdates.org www.coronadailyupdates.org;
+    return 404; # managed by Certbot
+}
+
