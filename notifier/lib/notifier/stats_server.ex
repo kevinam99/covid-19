@@ -62,7 +62,7 @@ defmodule Notifier.StatsServer do
     data = Map.put(data, :state_stats, state_stats)
     data = Map.put(data, :country_stats, country_stats)
 
-    Process.send_after(@refresh_interval, :load, 1000)
+    Process.send_after(self(), :load, @refresh_interval)
 
     {:noreply, data}
   end
