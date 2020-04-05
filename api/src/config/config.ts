@@ -1,13 +1,11 @@
 const Config = {
   development: {
     dbString: process.env.DB_STRING || 'mongodb://localhost:27017/covid',
-    smsApiKey: process.env.SMS_API_KEY || 'Hello World',
-    smsApiUrl: 'https://api.msg91.com/api/v2/sendsms'
+    notifierApiUrl: 'http://localhost:8000'
   },
   production: {
     dbString: process.env.DB_STRING || 'mongodb://localhost:27017/covid',
-    smsApiKey: process.env.SMS_API_KEY || 'Hello World',
-    smsApiUrl: 'https://api.msg91.com/api/v2/sendsms'
+    notifierApiUrl: 'http://localhost:8000'
   },
   countryList: [
     'IN'

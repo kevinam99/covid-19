@@ -31,7 +31,7 @@ async function addUser(req, res) {
   try {
     const user = await Service.addUser(validatedRequest.phone, validatedRequest.pincode.toString())
     logger.info(`Subscribed user ${validatedRequest.phone} - ${validatedRequest.pincode}`)
-    await Service.sendWelcomeSms(validatedRequest.phone)
+    await Service.sendWelcomeSms(user.phone, user.pincode, user.state, user.country)
     return res.status(201).json(user)
   } catch (err) {
     logger.error(`Error when adding user: ${err.message}`)

@@ -2,27 +2,20 @@ import * as Superagent from 'superagent'
 
 import Config from '../config'
 
-const smsApi = Config.getSmsApiUrl()
-const apiKey = Config.getSmsApiKey()
+const notifierApiUrl = Config.getNotifierApiUrl()
 
-async function sendSms(to: string, message: string) {
+async function sendWelcomeSms(phone: string, pincode: string, state: string, country: string) {
   const body = {
-    sender: 'CORONA',
-    route: '4',
-    country: 'IN',
-    sms: [
-      {
-        message,
-        to: [to]
-      }
-    ]
+    phone,
+    pincode,
+    state,
+    country
   }
 
   Superagent
-  .post(smsApi)
-  .send(body) // sends a JSON post body
+  .post(`${notifierApiUrl}/message`)
+  .send(body)
   .set('content-type', 'application/json')
-  .set('authkey', apiKey)
   .end((err, res) => {
     if (err) {
       throw err
@@ -33,5 +26,5 @@ async function sendSms(to: string, message: string) {
 
 
 export default {
-  sendSms
+  sendWelcomeSms
 }
