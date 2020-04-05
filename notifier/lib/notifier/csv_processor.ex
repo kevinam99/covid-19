@@ -4,7 +4,7 @@ defmodule Notifier.CsvProcessor do
   @file_urls [
     country: "https://coronadailyupdates.s3.ap-south-1.amazonaws.com/country_mohw",
     district: "https://coronadailyupdates.s3.ap-south-1.amazonaws.com/district",
-    state: "https://coronadailyupdates.s3.ap-south-1.amazonaws.com/state_mohw"
+    state: "https://coronadailyupdates.s3.ap-south-1.amazonaws.com/state"
   ]
 
   def process_country_file do
