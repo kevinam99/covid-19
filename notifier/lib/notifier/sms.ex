@@ -5,30 +5,26 @@ defmodule Notifier.SMS do
 
   require Logger
 
-  def send_sms(to, pin_code, state, country) do
+  def send_stat_sms(to, pin_code, state, country) do
     message = build_sms(pin_code, state, country)
 
     # remove +91 from phone number
-    response = send_sms(String.slice(to, 3..13), message)
+    send_sms(String.slice(to, 3..13), message)
+    |> handle_sms_response(to, message)
 
-    case response do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
-        Logger.info("#{to} - #{message}")
-        :ok
+    :ok
+  end
 
-      {:ok, %HTTPoison.Response{status_code: 400, body: body}} ->
-        Logger.error("Error when sending sms to #{to}. Error: #{body}")
-        {:error, body}
+  def send_welcome_sms(to, pin_code, state, country) do
+    message = """
+    Thank you for subscribing!
 
-      {:ok, %HTTPoison.Response{status_code: code, body: body}} ->
-        Logger.error("Error when sending sms to #{to} with code #{code}. Error: #{body}")
-        :error
+    #{build_sms(pin_code, state, country)}
+    """
 
-      {:error, %HTTPoison.Error{reason: reason}} ->
-        Logger.error("HTTPoison/Network error when sending sms to #{to} with reason #{reason}.")
-
-        :error
-    end
+    # remove +91 from phone number
+    send_sms(String.slice(to, 3..13), message)
+    |> handle_sms_response(to, message)
 
     :ok
   end
@@ -71,5 +67,26 @@ defmodule Notifier.SMS do
 
     headers = [{"content-type", "application/json"}, {"authkey", @auth_key}]
     HTTPoison.post(@api, Poison.encode!(data), headers)
+  end
+
+  defp handle_sms_response(response, to, message) do
+    case response do
+      {:ok, %HTTPoison.Response{status_code: 200}} ->
+        Logger.info("#{to} - #{message}")
+        :ok
+
+      {:ok, %HTTPoison.Response{status_code: 400, body: body}} ->
+        Logger.error("Error when sending sms to #{to}. Error: #{body}")
+        {:error, body}
+
+      {:ok, %HTTPoison.Response{status_code: code, body: body}} ->
+        Logger.error("Error when sending sms to #{to} with code #{code}. Error: #{body}")
+        :error
+
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        Logger.error("HTTPoison/Network error when sending sms to #{to} with reason #{reason}.")
+
+        :error
+    end
   end
 end

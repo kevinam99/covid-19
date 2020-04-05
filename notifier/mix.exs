@@ -27,6 +27,7 @@ defmodule Notifier.MixProject do
       {:gen_stage, "~> 1.0.0"},
       {:httpoison, "~> 1.6.2"},
       {:mongodb_driver, "~> 0.6"},
+      {:plug_cowboy, "~> 2.1.2"},
       {:poison, "~> 4.0.1"}
     ]
   end

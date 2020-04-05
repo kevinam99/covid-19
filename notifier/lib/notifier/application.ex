@@ -7,6 +7,7 @@ defmodule Notifier.Application do
     children = [
       {Notifier, []},
       {Notifier.StatsServer, []},
+      {Plug.Cowboy, scheme: :http, plug: Notifier.Http, options: [port: 8000]},
       {DynamicSupervisor, strategy: :one_for_one, name: Notifier.DynamicSupervisor},
       {Notifier.DB, []}
     ]

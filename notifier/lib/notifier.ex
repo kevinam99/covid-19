@@ -38,7 +38,8 @@ defmodule Notifier do
   def handle_info(:start_notifier, timeout) do
     DynamicSupervisor.start_child(Notifier.DynamicSupervisor, {Notifier.Pipeline, []})
 
-    Process.send_after(self(), :schedule_notifier, 0) # schedule for the next day immediately
+    # schedule for the next day immediately
+    Process.send_after(self(), :schedule_notifier, 0)
     {:noreply, timeout}
   end
 
