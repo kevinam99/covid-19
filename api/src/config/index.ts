@@ -11,6 +11,7 @@ const envtConfig = Config[env] // env specific values
 
 
 export default {
+  getAdminSecret: (): string => envtConfig.notifierSecret,
   getDbConnectionString: () => envtConfig.dbString,
   getEnv: (): string => env,
   getIndiaStates: (): string[] => IndiaStates,

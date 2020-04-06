@@ -1,9 +1,11 @@
 const Config = {
   development: {
+    notifierSecret: process.env.NOTIFIER_SECRET || 'myTopSecretToken',
     dbString: process.env.DB_STRING || 'mongodb://localhost:27017/covid',
     notifierApiUrl: 'http://localhost:8000'
   },
   production: {
+    notifierSecret: process.env.NOTIFIER_SECRET || 'myTopSecretToken',
     dbString: process.env.DB_STRING || 'mongodb://localhost:27017/covid',
     notifierApiUrl: 'http://localhost:8000'
   },
