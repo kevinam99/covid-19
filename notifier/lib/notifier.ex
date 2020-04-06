@@ -9,47 +9,63 @@ defmodule Notifier do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
-  def get_time_remaining(), do: GenServer.call(__MODULE__, :time_remaining)
-
   @impl true
   def init(:ok) do
     Process.send_after(self(), :schedule_notifier, 1000)
     # by default after a day
-    timeout = 86400
-    {:ok, timeout}
+    state = [timeout: 86400, enabled: true]
+    {:ok, state}
+  end
+
+  def set_enabled(flag) do
+    GenServer.call(__MODULE__, {:set_enabled, flag})
+    Logger.info("Set Notifier enabled flag to #{flag}")
+    :ok
+  end
+
+  @impl true
+  def handle_call({:set_enabled, true}, _from, state) do
+    state = Keyword.put(state, :enabled, true)
+    {:reply, state, state}
+  end
+
+  @impl true
+  def handle_call({:set_enabled, false}, _from, state) do
+    state = Keyword.put(state, :enabled, false)
+    {:reply, state, state}
   end
 
   # set time for when notifier will be called next
   @impl true
-  def handle_call(:time_remaining, _from, timeout) do
-    {:reply, timeout, timeout}
-  end
-
-  # set time for when notifier will be called next
-  @impl true
-  def handle_info(:schedule_notifier, _timeout) do
+  def handle_info(:schedule_notifier, state) do
     timeout = calc_time_remaining()
     Logger.info("Notifier scheduled in #{timeout / 1000} seconds")
     Process.send_after(self(), :start_notifier, timeout)
-    {:noreply, timeout}
+
+    Keyword.put(state, :timeout, timeout)
+
+    {:noreply, state}
   end
 
-  # if state is good, send messages and schedule for next day
-  # if bad, check in again in an hour
+  # if enabled, send messages and schedule for next day
+  # if disabled, check again in an hour
   @impl true
-  def handle_info(:start_notifier, timeout) do
-    case Notifier.StatsServer.are_stats_good?() do
+  def handle_info(:start_notifier, state) do
+    stats_status = Notifier.StatsServer.are_stats_good?()
+
+    case state[:enabled] and stats_status do
       true ->
         DynamicSupervisor.start_child(Notifier.DynamicSupervisor, {Notifier.Pipeline, []})
         # schedule for the next day immediately
         Process.send_after(self(), :schedule_notifier, 0)
-        {:noreply, timeout}
+        {:noreply, state}
 
       false ->
         timeout = 1000 * 60 * 60
-        Logger.info("Stats status was bad so trying again in #{timeout / 1000} seconds")
+        Logger.info("Notifier disabled. Trying again in #{timeout / 1000} seconds")
         Process.send_after(self(), :start_notifier, timeout)
-        {:noreply, timeout}
+        Keyword.put(state, :timeout, timeout)
+        {:noreply, state}
     end
   end
 

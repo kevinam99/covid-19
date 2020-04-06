@@ -39,6 +39,7 @@ state_map = %{
 }
 
 config :notifier,
+  admin_secret: "myTopSecretToken",
   data_refresh_interval: 1000 * 60 * 60,
   db_url: "mongodb://localhost:27017/covid",
   sms_auth_key: "HELLO WORLD",
