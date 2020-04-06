@@ -3,16 +3,15 @@ defmodule Notifier.CsvProcessor do
 
   @file_urls [
     country: "https://coronadailyupdates.s3.ap-south-1.amazonaws.com/country_mohw",
-    district: "https://coronadailyupdates.s3.ap-south-1.amazonaws.com/district",
-    state: "https://coronadailyupdates.s3.ap-south-1.amazonaws.com/state"
+    district: "https://coronadailyupdates.s3.ap-south-1.amazonaws.com/district_covid",
+    state: "https://coronadailyupdates.s3.ap-south-1.amazonaws.com/state_mohw"
   ]
 
   def process_country_file do
     new_country_map = fn stats ->
       %{
-        deaths: stats["Deceased"],
-        hospitalized: stats["Hospitalized"],
-        recovered: stats["Recovered"]
+        confirmed: stats["Confirmed"],
+        deaths: stats["Deceased"]
       }
     end
 
@@ -34,10 +33,8 @@ defmodule Notifier.CsvProcessor do
   def process_district_file do
     new_pin_map = fn stat ->
       %{
-        district: stat["District"],
-        deaths: stat["Deceased"],
-        hospitalized: stat["Hospitalized"],
-        recovered: stat["Recovered"]
+        confirmed: stat["Confirmed"],
+        district: stat["District"]
       }
     end
 
@@ -65,9 +62,8 @@ defmodule Notifier.CsvProcessor do
   def process_state_file do
     new_state_map = fn stat ->
       %{
-        deaths: stat["Deceased"],
-        hospitalized: stat["Hospitalized"],
-        recovered: stat["Recovered"]
+        confirmed: stat["Confirmed"],
+        deaths: stat["Deceased"]
       }
     end
 
