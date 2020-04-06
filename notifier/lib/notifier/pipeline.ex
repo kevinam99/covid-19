@@ -19,7 +19,7 @@ defmodule Notifier.Pipeline do
     :ok =
       Notifier.SMS.send_stat_sms(user["phone"], user["pincode"], user["state"], user["country"])
 
-    Process.sleep(1000)
+    Process.sleep(3000)
 
     message
   end
