@@ -34,13 +34,23 @@ defmodule Notifier do
     {:noreply, timeout}
   end
 
+  # if state is good, send messages and schedule for next day
+  # if bad, check in again in an hour
   @impl true
   def handle_info(:start_notifier, timeout) do
-    DynamicSupervisor.start_child(Notifier.DynamicSupervisor, {Notifier.Pipeline, []})
+    case Notifier.StatsServer.are_stats_good?() do
+      true ->
+        DynamicSupervisor.start_child(Notifier.DynamicSupervisor, {Notifier.Pipeline, []})
+        # schedule for the next day immediately
+        Process.send_after(self(), :schedule_notifier, 0)
+        {:noreply, timeout}
 
-    # schedule for the next day immediately
-    Process.send_after(self(), :schedule_notifier, 0)
-    {:noreply, timeout}
+      false ->
+        timeout = 1000 * 60 * 60
+        Logger.info("Stats status was bad so trying again in #{timeout / 1000} seconds")
+        Process.send_after(self(), :start_notifier, timeout)
+        {:noreply, timeout}
+    end
   end
 
   def calc_time_remaining() do
@@ -54,7 +64,7 @@ defmodule Notifier do
     # 24 hours minus the time passed will give how much longer 
 
     cond do
-      now.hour <= deadline.hour ->
+      Time.diff(now, deadline) < 0 ->
         Time.diff(deadline, now)
 
       true ->
