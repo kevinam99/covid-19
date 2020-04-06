@@ -54,7 +54,7 @@ defmodule Notifier do
     # 24 hours minus the time passed will give how much longer 
 
     cond do
-      now.hour < deadline.hour ->
+      now.hour <= deadline.hour ->
         Time.diff(deadline, now)
 
       true ->
