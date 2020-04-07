@@ -1,4 +1,9 @@
 defmodule Notifier do
+  @moduledoc """
+  Schedules the notifier service to send sms provided it's enabled and the stats are in valid state.
+  Stops the Broadway pipeline once work is over and restarts again based on the time to send sms
+  """
+
   use GenServer
   require Logger
 

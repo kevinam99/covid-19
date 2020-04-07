@@ -1,4 +1,8 @@
 defmodule Notifier.Http do
+  @moduledoc """
+  HTTP endpoints for other services and admin work
+  """
+
   use Plug.Router
   require Logger
 

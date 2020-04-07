@@ -1,4 +1,8 @@
 defmodule Notifier.CsvProcessor do
+  @moduledoc """
+  Logic to fetch and process CSV data for country, state, district
+  """
+
   require Logger
 
   @file_urls [

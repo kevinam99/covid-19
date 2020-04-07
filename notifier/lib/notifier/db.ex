@@ -1,4 +1,8 @@
 defmodule Notifier.DB do
+  @moduledoc """
+  Connect to DB and execute operations
+  """
+
   use GenServer
 
   def start_link(_opts) do

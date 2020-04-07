@@ -1,4 +1,8 @@
 defmodule Notifier.StatsServer do
+  @moduledoc """
+  Contains stats for country, state, district, refreshed every @refresh_interval
+  """
+
   use GenServer
 
   @initial_state %{

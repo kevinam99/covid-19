@@ -1,4 +1,8 @@
 defmodule Notifier.SMS do
+  @moduledoc """
+  Logic to build and send sms based on passed in subscriber details
+  """
+
   @api Application.fetch_env!(:notifier, :sms_url)
   @auth_key Application.fetch_env!(:notifier, :sms_auth_key)
   @state_map Application.fetch_env!(:notifier, :state_map)

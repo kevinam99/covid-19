@@ -1,4 +1,8 @@
 defmodule Notifier.Pipeline do
+  @moduledoc """
+  Broadway pipeline to fetch users and send messages
+  """
+
   use Broadway
 
   def start_link(_opts) do

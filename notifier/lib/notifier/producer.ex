@@ -1,4 +1,8 @@
 defmodule Notifier.Producer do
+  @moduledoc """
+  Producer used in broadway. Gets data from the DB
+  """
+
   use GenStage
 
   require Logger
@@ -29,6 +33,10 @@ end
 
 # Transform Genstage messages to the %Broadway.Message{} format
 defmodule Notifier.MessageTransformer do
+  @moduledoc """
+  Producer should return a %Broadway.Message struct. This module does that for Producer
+  """
+
   def transform(user, _opts) do
     %Broadway.Message{
       data: user,
