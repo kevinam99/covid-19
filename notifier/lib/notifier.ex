@@ -13,7 +13,7 @@ defmodule Notifier do
   def init(:ok) do
     Process.send_after(self(), :schedule_notifier, 1000)
     # by default after a day
-    state = [timeout: 86400, enabled: true]
+    state = [timeout: 86_400, enabled: true]
     {:ok, state}
   end
 
@@ -85,7 +85,7 @@ defmodule Notifier do
 
       true ->
         time_past = Time.diff(now, deadline)
-        86400 - time_past
+        86_400 - time_past
     end
   end
 end
