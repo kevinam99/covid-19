@@ -42,7 +42,7 @@ defmodule Notifier do
     Logger.info("Notifier scheduled in #{timeout / 1000} seconds")
     Process.send_after(self(), :start_notifier, timeout)
 
-    Keyword.put(state, :timeout, timeout)
+    state = Keyword.put(state, :timeout, timeout)
 
     {:noreply, state}
   end
@@ -64,7 +64,7 @@ defmodule Notifier do
         timeout = 1000 * 60 * 60
         Logger.info("Notifier disabled. Trying again in #{timeout / 1000} seconds")
         Process.send_after(self(), :start_notifier, timeout)
-        Keyword.put(state, :timeout, timeout)
+        state = Keyword.put(state, :timeout, timeout)
         {:noreply, state}
     end
   end
