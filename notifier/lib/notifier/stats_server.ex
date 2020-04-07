@@ -24,15 +24,15 @@ defmodule Notifier.StatsServer do
     {:ok, @initial_state}
   end
 
-  def are_stats_good?() do
+  def are_stats_good? do
     GenServer.call(__MODULE__, :are_stats_good)
   end
 
-  def set_stats_status() do
+  def set_stats_status do
     GenServer.call(__MODULE__, :set_stats_status)
   end
 
-  def get_stats_for_country() do
+  def get_stats_for_country do
     GenServer.call(__MODULE__, :country_stats)
   end
 

@@ -74,7 +74,7 @@ defmodule Notifier do
     end
   end
 
-  def calc_time_remaining() do
+  def calc_time_remaining do
     now = Time.utc_now()
     calc_seconds_remaining(now, @time_to_send) * 1000
   end
@@ -82,7 +82,7 @@ defmodule Notifier do
   defp calc_seconds_remaining(now, deadline) do
     # If not past deadline, return how long until deadline
     # If past deadline, see how much past deadline
-    # 24 hours minus the time passed will give how much longer 
+    # 24 hours minus the time passed will give how much longer
 
     if Time.diff(now, deadline) < 0 do
       Time.diff(deadline, now)
