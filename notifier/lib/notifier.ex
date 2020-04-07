@@ -79,13 +79,11 @@ defmodule Notifier do
     # If past deadline, see how much past deadline
     # 24 hours minus the time passed will give how much longer 
 
-    cond do
-      Time.diff(now, deadline) < 0 ->
-        Time.diff(deadline, now)
-
-      true ->
-        time_past = Time.diff(now, deadline)
-        86_400 - time_past
+    if Time.diff(now, deadline) < 0 do
+      Time.diff(deadline, now)
+    else
+      time_past = Time.diff(now, deadline)
+      86_400 - time_past
     end
   end
 end

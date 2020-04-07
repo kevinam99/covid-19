@@ -29,7 +29,7 @@ defmodule Notifier.MixProject do
       {:mongodb_driver, "~> 0.6"},
       {:plug_cowboy, "~> 2.1.2"},
       {:poison, "~> 4.0.1"},
-
+      # dev deps
       {:credo, "~> 1.3", only: [:dev, :test], runtime: false}
     ]
   end

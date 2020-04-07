@@ -40,7 +40,7 @@ defmodule Notifier.Http do
     enable = body["enable"]
 
     with :ok <- validate_request.(secret: secret, enable: enable),
-         :ok = Notifier.set_enabled(enable) do
+         :ok <- Notifier.set_enabled(enable) do
       response =
         Poison.encode!(%{
           message: "Success"

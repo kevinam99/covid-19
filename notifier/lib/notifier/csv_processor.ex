@@ -15,18 +15,20 @@ defmodule Notifier.CsvProcessor do
       }
     end
 
-    with {:ok, data} <- fetch_data(@file_urls[:country]) do
-      country_data =
-        data
-        |> String.trim()
-        |> String.split("\n")
-        |> CSV.decode!(headers: true)
-        |> Enum.map(&new_country_map.(&1))
-        |> List.first()
+    case fetch_data(@file_urls[:country]) do
+      {:ok, data} ->
+        country_data =
+          data
+          |> String.trim()
+          |> String.split("\n")
+          |> CSV.decode!(headers: true)
+          |> Enum.map(&new_country_map.(&1))
+          |> List.first()
 
-      {:ok, country_data}
-    else
-      err -> err
+        {:ok, country_data}
+
+      err ->
+        err
     end
   end
 
@@ -38,24 +40,26 @@ defmodule Notifier.CsvProcessor do
       }
     end
 
-    with {:ok, data} <- fetch_data(@file_urls[:district]) do
-      district_data =
-        data
-        |> String.trim()
-        |> String.split("\n")
-        |> CSV.decode!(headers: true)
-        |> Enum.reduce(%{}, fn
-          stat, acc ->
-            Map.put(
-              acc,
-              stat["Pincode"],
-              new_pin_map.(stat)
-            )
-        end)
+    case fetch_data(@file_urls[:district]) do
+      {:ok, data} ->
+        district_data =
+          data
+          |> String.trim()
+          |> String.split("\n")
+          |> CSV.decode!(headers: true)
+          |> Enum.reduce(%{}, fn
+            stat, acc ->
+              Map.put(
+                acc,
+                stat["Pincode"],
+                new_pin_map.(stat)
+              )
+          end)
 
-      {:ok, district_data}
-    else
-      err -> err
+        {:ok, district_data}
+
+      err ->
+        err
     end
   end
 
@@ -67,31 +71,34 @@ defmodule Notifier.CsvProcessor do
       }
     end
 
-    with {:ok, data} <- fetch_data(@file_urls[:state]) do
-      state_data =
-        data
-        |> String.trim()
-        |> String.split("\n")
-        |> CSV.decode!(headers: true)
-        |> Enum.reduce(%{}, fn
-          stat, acc ->
-            Map.put(
-              acc,
-              stat["State"],
-              new_state_map.(stat)
-            )
-        end)
+    case fetch_data(@file_urls[:state]) do
+      {:ok, data} ->
+        state_data =
+          data
+          |> String.trim()
+          |> String.split("\n")
+          |> CSV.decode!(headers: true)
+          |> Enum.reduce(%{}, fn
+            stat, acc ->
+              Map.put(
+                acc,
+                stat["State"],
+                new_state_map.(stat)
+              )
+          end)
 
-      {:ok, state_data}
-    else
-      err -> err
+        {:ok, state_data}
+
+      err ->
+        err
     end
   end
 
   defp fetch_data(url) do
-    with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <- HTTPoison.get(url) do
-      {:ok, body}
-    else
+    case HTTPoison.get(url) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        {:ok, body}
+
       {:ok, %HTTPoison.Response{status_code: code, body: body}} ->
         Logger.error("Error when fetching state file with code #{code}. Error: #{body}")
         {:error, body}
