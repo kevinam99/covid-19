@@ -25,6 +25,11 @@ async function addUser(phone: string, pincode: string) {
   return user.save()
 }
 
+
+async function getUserCount(){
+  return User.estimatedDocumentCount()
+}
+
 async function sendWelcomeSms(to: string, pincode: string, state: string, country: string) {
   try {
     await SmsService.sendWelcomeSms(to, pincode, state, country)
@@ -36,8 +41,10 @@ async function sendWelcomeSms(to: string, pincode: string, state: string, countr
   return true
 }
 
+
 const Service = {
   addUser,
+  getUserCount,
   sendWelcomeSms
 }
 
