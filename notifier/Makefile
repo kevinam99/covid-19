@@ -4,6 +4,11 @@ COMMIT_TAG ?= $(shell git log -1 --pretty="%h").zip
 build:
 	MIX_ENV=prod mix release
 
+
+.PHONY: lint
+lint:
+	mix credo --strict
+
 .PHONY: transfer
 transfer:
 	zip -rq $(COMMIT_TAG) config/ lib/ mix.*  
