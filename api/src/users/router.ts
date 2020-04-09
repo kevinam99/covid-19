@@ -3,7 +3,7 @@ import Controller from './controller'
 
 const router = express.Router()
 
-router.post('/', Controller.addUser)
 router.get('/', Controller.getUserCount)
+router.post('/', Controller.addUser)
 
 export default router

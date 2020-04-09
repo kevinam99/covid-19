@@ -26,7 +26,7 @@ async function addUser(phone: string, pincode: string) {
 }
 
 
-async function getUserCount(){
+async function getUserCount() {
   return User.estimatedDocumentCount()
 }
 

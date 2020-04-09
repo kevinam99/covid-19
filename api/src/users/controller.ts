@@ -39,17 +39,15 @@ async function addUser(req, res) {
   }
 }
 
-async function getUserCount(req, res)
-{
-    try{
-      const count = await Service.getUserCount()
-      return res.json({ count })
-    } catch(err) {
-      logger.error(`Error when fetchin user count: ${err.message}`)
-      return errorResponse(res, 'Something went wrong', 500)
-    }
+async function getUserCount(req, res) {
+  try {
+    const count = await Service.getUserCount()
+    return res.json({ count })
+  } catch (err) {
+    logger.error(`Error when fetching user count: ${err.message}`)
+    return errorResponse(res, 'Something went wrong', 500)
+  }
 }
-
 
 
 function errorResponse(res, message: string, status = 500) {
