@@ -7,9 +7,6 @@ defmodule Notifier do
   use GenServer
   require Logger
 
-  # hour of the day to send at in UTC time
-  @time_to_send ~T[01:30:00]
-
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
@@ -75,8 +72,9 @@ defmodule Notifier do
   end
 
   def calc_time_remaining do
+    time_to_send = Application.fetch_env!(:notifier, :notification_time)
     now = Time.utc_now()
-    calc_seconds_remaining(now, @time_to_send) * 1000
+    calc_seconds_remaining(now, time_to_send) * 1000
   end
 
   defp calc_seconds_remaining(now, deadline) do
