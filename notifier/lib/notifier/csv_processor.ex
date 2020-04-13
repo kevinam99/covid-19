@@ -14,8 +14,11 @@ defmodule Notifier.CsvProcessor do
   def process_country_file do
     new_country_map = fn stats ->
       %{
-        confirmed: stats["Confirmed"],
-        deaths: stats["Deceased"]
+        total: String.to_integer(stats["Confirmed"]),
+        current:
+          String.to_integer(stats["Confirmed"]) -
+            (String.to_integer(stats["Deceased"]) + String.to_integer(stats["Recovered"])),
+        deaths: String.to_integer(stats["Deceased"])
       }
     end
 
@@ -39,7 +42,7 @@ defmodule Notifier.CsvProcessor do
   def process_district_file do
     new_pin_map = fn stat ->
       %{
-        confirmed: stat["Confirmed"],
+        total: String.to_integer(stat["Confirmed"]),
         district: stat["District"]
       }
     end
@@ -70,8 +73,11 @@ defmodule Notifier.CsvProcessor do
   def process_state_file do
     new_state_map = fn stat ->
       %{
-        confirmed: stat["Confirmed"],
-        deaths: stat["Deceased"]
+        total: String.to_integer(stat["Confirmed"]),
+        current:
+          String.to_integer(stat["Confirmed"]) -
+            (String.to_integer(stat["Deceased"]) + String.to_integer(stat["Recovered"])),
+        deaths: String.to_integer(stat["Deceased"])
       }
     end
 

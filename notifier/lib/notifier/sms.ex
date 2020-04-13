@@ -41,16 +41,18 @@ defmodule Notifier.SMS do
     """
     *Coronavirus Numbers*
       ---India---
-      Confirmed: #{country_stats[:confirmed] || 0}
+      Total: #{country_stats[:total] || 0}
+      Current: #{country_stats[:current] || 0}
       Deaths: #{country_stats[:deaths] || 0}
 
       ---#{@state_map[state] || state}---
-      Confirmed: #{state_stats[:confirmed] || 0}
+      Total: #{state_stats[:total] || 0}
+      Current: #{state_stats[:current] || 0}
       Deaths: #{state_stats[:deaths] || 0}
 
       ---#{district_stats[:district] || 'District'}---
-      Confirmed: #{district_stats[:confirmed] || 0}
-      
+      Total: #{district_stats[:total] || 0}
+
       Subscribe: bit.ly/coronadailyupdates
     """
   end
