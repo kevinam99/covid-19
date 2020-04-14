@@ -42,6 +42,8 @@ config :notifier,
   admin_secret: "myTopSecretToken",
   data_refresh_interval: 1000 * 60 * 60,
   db_url: "mongodb://localhost:27017/covid",
+  # hour of the day to send at in UTC time
+  notification_time: ~T[01:30:00],
   sms_auth_key: "HELLO WORLD",
   sms_url: "https://api.msg91.com/api/v2/sendsms",
   state_map: state_map
