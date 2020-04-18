@@ -57,6 +57,10 @@ const userSchema = new Schema({
     required: true,
     uppercase: true,
     validate: (state: string) => stateList.includes(state.toUpperCase())
+  },
+  subscribed: {
+    type: Boolean,
+    default: true
   }
 }, {
   timestamps: true
