@@ -49,6 +49,22 @@ async function getUserCount(req, res) {
   }
 }
 
+async function unsubscribeUser(req, res) {
+  let validatedPhoneNumber;
+  const schema = Joi.object().keys({
+    phone: Joi.string().trim().length(13).regex(/^\+[1-9]\d{1,14}$/).required()
+  })
+
+  try {
+    validatedPhoneNumber = await schema.validate(req.body, { abortEarly: false })
+    const response = await Service.unsubscribeUser(validatedPhoneNumber)
+    return res.status(201).json(response)
+  }
+  catch(err) {
+    logger.error(`Error when unsubscribing user ${validatedPhoneNumber}: ${err}`)
+  }
+}
+
 
 function errorResponse(res, message: string, status = 500) {
   return res.status(status).json({ message })
@@ -57,5 +73,6 @@ function errorResponse(res, message: string, status = 500) {
 
 export default {
   addUser,
-  getUserCount
+  getUserCount,
+  unsubscribeUser
 }
