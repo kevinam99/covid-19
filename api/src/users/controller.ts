@@ -57,8 +57,8 @@ async function unsubscribeUser(req, res) {
 
   try {
     validatedPhoneNumber = await schema.validate(req.body, { abortEarly: false })
-    const response = await Service.unsubscribeUser(validatedPhoneNumber)
-    return res.status(201).json(response)
+    const unsubscribed = await Service.unsubscribeUser(validatedPhoneNumber)
+    return res.status(201).json({ unsubscribed })
   } catch (err) {
      logger.error(`Error when unsubscribing user ${validatedPhoneNumber}: ${err}`)
   }
